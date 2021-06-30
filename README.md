@@ -22,3 +22,13 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+### Extra dependancies
+* npm install vue-router@4 json-server axios
+
+### Reference
+* https://altrim.io/posts/axios-http-client-using-typescript
+* https://axios-http.com/
+* https://grid.layoutit.com/
+* https://www.maxpou.fr/vuejs-performance-improvement-with-memoization
