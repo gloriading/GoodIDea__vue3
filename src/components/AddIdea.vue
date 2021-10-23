@@ -1,12 +1,12 @@
 <template>
-  <div id="add-tutorials">
+  <div id="addIdea">
     <div class="card" v-if="!isSubmitted">
       <label for="title">Title</label>
       <input id="title" v-model="title" />
       <label for="desciption">Description</label>
       <input id="desciption" v-model="description" />
       <div class="actions">
-        <button @click="saveTutorial">Submit</button>
+        <button @click="saveIdea">Submit</button>
       </div>
     </div>
     <div class="card" v-else>
@@ -20,10 +20,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { create } from "@/services/TutorialDataService";
+import { createIdea } from "@/services/TutorialDataService";
 
 export default defineComponent({
-  name: "AddTutorial",
+  name: "AddIdea",
   data() {
     return {
       title: "",
@@ -32,7 +32,7 @@ export default defineComponent({
     };
   },
   methods: {
-    async saveTutorial() {
+    async saveIdea() {
       if (!this.title || !this.description) {
         return;
       }
@@ -43,7 +43,7 @@ export default defineComponent({
         published: false,
       };
 
-      const data = await create(newTutorial);
+      const data = await createIdea(newTutorial);
       console.log(data);
       this.isSubmitted = true;
       this.title = "";
@@ -56,7 +56,7 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-#add-tutorials {
+#addIdea {
   display: flex;
   justify-content: center;
   align-items: flex-start;

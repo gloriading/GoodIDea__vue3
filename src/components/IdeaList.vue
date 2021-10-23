@@ -1,9 +1,9 @@
 <template>
-  <div id="tutorial-list">
+  <div id="ideaList">
     <div class="search">
       <input
         id="search-input"
-        v-model="searchKey"
+        v-model.trim="searchKey"
         placeholder="Search by title"
       />
       <button @click="search">Search</button>
@@ -14,7 +14,7 @@
         v-for="(item, idx) in tutorials"
         :key="`tutorial-${idx}`"
         :title="`tutorial-${idx}`"
-        @click="setTutorial(item)"
+        @click="showIdea(item)"
         :class="item.id === tutorial.id ? 'active' : ''"
       >
         {{ item.title }}
@@ -24,33 +24,33 @@
       <p><b>Title:</b> {{ tutorial.title }}</p>
       <p><b>Description:</b> {{ tutorial.description }}</p>
       <p><b>Status:</b> {{ tutorial.published ? "Published" : "Pending" }}</p>
-      <router-link class="edit-tutorial" :to="'/tutorials/' + tutorial.id"
+      <router-link class="edit__idea" :to="'/idea/' + tutorial.id"
         >Edit</router-link
       >
     </div>
     <div class="display" v-else>
-      <h4>Please select a tutorial.</h4>
+      <h4>Please select an idea.</h4>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { fetchAllTutorials, findByTitle } from "@/services/TutorialDataService";
-import Tutorial from "@/types/Tutorial";
+import { fetchAllIdeas, findByTitle } from "@/services/TutorialDataService";
+import Idea from "@/types/Idea";
 
 export default defineComponent({
-  name: "TutorialList",
+  name: "IdeaList",
   data() {
     return {
-      tutorials: [] as Tutorial[],
-      tutorialsBackup: [] as Tutorial[],
+      tutorials: [] as Idea[],
+      tutorialsBackup: [] as Idea[],
       searchKey: "",
-      tutorial: {} as Tutorial,
+      tutorial: {} as Idea,
     };
   },
   async created() {
-    const tutorials = await fetchAllTutorials();
+    const tutorials = await fetchAllIdeas();
     this.tutorials = tutorials;
     this.tutorialsBackup = tutorials;
   },
@@ -63,9 +63,9 @@ export default defineComponent({
       const tutorials = await findByTitle(this.searchKey);
       this.tutorialsBackup = [...this.tutorials];
       this.tutorials = tutorials;
-      this.tutorial = {} as Tutorial;
+      this.tutorial = {} as Idea;
     },
-    setTutorial(tutorial: Tutorial) {
+    showIdea(tutorial: Idea) {
       this.tutorial = tutorial;
     },
   },
@@ -73,7 +73,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#tutorial-list {
+#ideaList {
   justify-self: center;
   width: 800px;
   display: grid;
@@ -121,7 +121,7 @@ export default defineComponent({
   padding: 0.5rem 1rem;
 }
 
-.edit-tutorial {
+.edit__idea {
   display: inline-block;
   margin-top: 1rem;
   margin-left: 1rem;
@@ -130,7 +130,7 @@ export default defineComponent({
   transition: all 0.1s;
   font-weight: 500;
 }
-.edit-tutorial:hover {
+.edit__idea:hover {
   color: #f7f1e3;
   background: #2c2c54;
 }

@@ -3,19 +3,19 @@ import { createWebHistory, createRouter, RouteRecordRaw } from "vue-router";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    alias: "/tutorials",
-    name: "tutorials",
-    component: () => import("./components/TutorialList.vue"),
+    alias: "/ideas",
+    name: "ideas",
+    component: () => import("./components/IdeaList.vue"),
   },
   {
-    path: "/tutorials/:id",
-    name: "tutorial-details",
-    component: () => import("./components/TutorialDetails.vue"),
+    path: "/idea/:id",
+    name: "idea-details",
+    component: () => import("./components/IdeaDetails.vue"),
   },
   {
     path: "/add",
-    name: "add-tutorial",
-    component: () => import("./components/AddTutorial.vue"),
+    name: "add-idea",
+    component: () => import("./components/AddIdea.vue"),
   },
 ];
 

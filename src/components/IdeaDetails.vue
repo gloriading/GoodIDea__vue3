@@ -1,7 +1,7 @@
 <template>
-  <div id="tutorial-details">
+  <div id="ideaDetails">
     <div class="card" v-if="tutorial.id">
-      <h1>Tutorial</h1>
+      <h1>Idea</h1>
       <label for="title">Title</label>
       <input id="title" v-model="tutorial.title" />
       <label for="desciption">Description</label>
@@ -19,8 +19,8 @@
     <div class="card" v-else>
       <h2>NOT FOUND</h2>
       <h4>
-        Please select a tutorial in
-        <router-link to="/">tutorials page</router-link>
+        Please select an idea in
+        <router-link to="/">Ideas page</router-link>
       </h4>
     </div>
   </div>
@@ -29,27 +29,27 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import {
-  fetchTutorial,
-  updateTutorial,
-  deleteTutorial,
+  fetchIdea,
+  updateIdea,
+  deleteIdea,
 } from "@/services/TutorialDataService";
-import Tutorial from "@/types/Tutorial";
+import Idea from "@/types/Idea";
 
 export default defineComponent({
-  name: "TutorialDetails",
+  name: "IdeaDetails",
   data() {
     return {
-      tutorial: {} as Tutorial,
+      tutorial: {} as Idea,
       message: "",
     };
   },
   async created() {
     const tutorialId = this.$route.params.id as string;
     try {
-      const tutorial = await fetchTutorial(tutorialId);
+      const tutorial = await fetchIdea(tutorialId);
       this.tutorial = tutorial;
     } catch (e) {
-      console.warn("Error - fetchTutorial: ", e);
+      console.warn("Error - fetchIdea: ", e);
     }
   },
   methods: {
@@ -58,8 +58,8 @@ export default defineComponent({
         return;
       }
       try {
-        await updateTutorial(this.tutorial.id, this.tutorial);
-        this.message = "Tutorial Updated!";
+        await updateIdea(this.tutorial.id, this.tutorial);
+        this.message = "Idea Updated!";
       } catch (e) {
         console.warn("Error - update: ", e);
       }
@@ -74,8 +74,8 @@ export default defineComponent({
     async remove() {
       try {
         const idToRemove = this.tutorial.id;
-        await deleteTutorial(idToRemove);
-        this.message = `Tutorial ${idToRemove} removed! Redirecting...`;
+        await deleteIdea(idToRemove);
+        this.message = `Idea ${idToRemove} removed! Redirecting...`;
         setTimeout(() => {
           this.$router.push("/");
         }, 2000);
@@ -88,7 +88,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#tutorial-details {
+#ideaDetails {
   display: flex;
   justify-content: center;
   align-items: flex-start;

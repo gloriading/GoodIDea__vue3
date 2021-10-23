@@ -1,42 +1,40 @@
 import { http } from "@/http-common";
-import Tutorial from "@/types/Tutorial";
+import Idea from "@/types/Idea";
 
-export const fetchAllTutorials = async (): Promise<Tutorial[]> => {
-  const { data } = await http.get<Tutorial[]>("/tutorials");
+export const fetchAllIdeas = async (): Promise<Idea[]> => {
+  const { data } = await http.get<Idea[]>("/");
   return data;
 };
 
-export const fetchTutorial = async (id: string | number): Promise<Tutorial> => {
-  const { data } = await http.get<Tutorial>(`/tutorials/${id}`);
+export const fetchIdea = async (id: string | number): Promise<Idea> => {
+  const { data } = await http.get<Idea>(`/${id}`);
   return data;
 };
 
-export const create = async (payload: Tutorial): Promise<Tutorial> => {
-  const { data } = await http.post<Tutorial>("/tutorials", payload);
+export const createIdea = async (payload: Idea): Promise<Idea> => {
+  const { data } = await http.post<Idea>("/", payload);
   return data;
 };
 
-export const deleteAll = async (): Promise<Tutorial[]> => {
-  const { data } = await http.delete<Tutorial[]>("/tutorials");
+export const deleteAll = async (): Promise<Idea[]> => {
+  const { data } = await http.delete<Idea[]>("/");
   return data;
 };
 
-export const findByTitle = async (title: string): Promise<Tutorial[]> => {
-  const { data } = await http.get<Tutorial[]>(`/tutorials?title=${title}`);
+export const findByTitle = async (title: string): Promise<Idea[]> => {
+  const { data } = await http.get<Idea[]>(`/?title=${title}`);
   return data;
 };
 
-export const updateTutorial = async (
+export const updateIdea = async (
   id: string | number,
-  payload: Tutorial
-): Promise<Tutorial> => {
-  const { data } = await http.put<Tutorial>(`/tutorials/${id}`, payload);
+  payload: Idea
+): Promise<Idea> => {
+  const { data } = await http.put<Idea>(`/${id}`, payload);
   return data;
 };
 
-export const deleteTutorial = async (
-  id: string | number
-): Promise<Tutorial> => {
-  const { data } = await http.delete<Tutorial>(`/tutorials/${id}`);
+export const deleteIdea = async (id: string | number): Promise<Idea> => {
+  const { data } = await http.delete<Idea>(`/${id}`);
   return data;
 };

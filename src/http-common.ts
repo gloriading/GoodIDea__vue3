@@ -23,7 +23,7 @@ class Http {
 
   initHttp() {
     const http = axios.create({
-      baseURL: "http://localhost:5050",
+      baseURL: "http://localhost:5050/ideas",
       headers,
     });
 
@@ -106,7 +106,7 @@ class Http {
 export const http = new Http();
 
 // const apiClient: AxiosInstance = axios.create({
-//   baseURL: "http://localhost:5050/tutorials",
+//   baseURL: "http://localhost:5050/ideas",
 //   headers: headers,
 //   timeout: 1000,
 // });
