@@ -6,7 +6,7 @@
       <label for="desciption">Description</label>
       <input id="desciption" v-model="description" />
       <div class="actions">
-        <button @click="saveIdea">Submit</button>
+        <button :disabled="isDisabledBtn" @click="saveIdea">Submit</button>
       </div>
     </div>
     <div class="card" v-else>
@@ -17,44 +17,54 @@
     </div>
   </div>
 </template>
-
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { createIdea } from "@/services/TutorialDataService";
 
 export default defineComponent({
   name: "AddIdea",
-  data() {
-    return {
-      title: "",
-      description: "",
-      isSubmitted: false,
-    };
-  },
-  methods: {
-    async saveIdea() {
-      if (!this.title || !this.description) {
-        return;
-      }
+  setup() {
+    const title = ref("");
+    const description = ref("");
+    const isSubmitted = ref(false);
+    const isDisabledBtn = computed(() => {
+      return !title.value || !description.value;
+    });
+
+    const saveIdea = async () => {
+      if (!title.value || !description.value) return;
       const newTutorial = {
         id: 0,
-        title: this.title,
-        description: this.description,
+        title: title.value,
+        description: description.value,
         published: false,
       };
 
-      const data = await createIdea(newTutorial);
-      console.log(data);
-      this.isSubmitted = true;
-      this.title = "";
-      this.description = "";
-    },
-    addAnother() {
-      this.isSubmitted = false;
-    },
+      try {
+        await createIdea(newTutorial);
+        isSubmitted.value = true;
+        title.value = "";
+        description.value = "";
+      } catch (error) {
+        console.error("saveIdea: ", error);
+      }
+    };
+
+    const addAnother = () => {
+      isSubmitted.value = false;
+    };
+    return {
+      title,
+      description,
+      isSubmitted,
+      isDisabledBtn,
+      saveIdea,
+      addAnother,
+    };
   },
 });
 </script>
+
 <style scoped>
 #addIdea {
   display: flex;

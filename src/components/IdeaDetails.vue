@@ -1,15 +1,15 @@
 <template>
   <div id="ideaDetails">
-    <div class="card" v-if="tutorial.id">
+    <div class="card" v-if="idea.id">
       <h1>Idea</h1>
       <label for="title">Title</label>
-      <input id="title" v-model="tutorial.title" />
+      <input id="title" v-model="idea.title" />
       <label for="desciption">Description</label>
-      <input id="desciption" v-model="tutorial.description" />
-      <p><b>Status:</b> {{ tutorial.published ? "Published" : "Pending" }}</p>
+      <input id="desciption" v-model="idea.description" />
+      <p><b>Status:</b> {{ idea.published ? "Published" : "Pending" }}</p>
       <div class="actions">
         <button @click="togglePublish">
-          {{ tutorial.published ? "UnPublish" : "Publish" }}
+          {{ idea.published ? "UnPublish" : "Publish" }}
         </button>
         <button @click="remove">Delete</button>
         <button @click="update">Update</button>
@@ -25,9 +25,9 @@
     </div>
   </div>
 </template>
-
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import {
   fetchIdea,
   updateIdea,
@@ -37,52 +37,63 @@ import Idea from "@/types/Idea";
 
 export default defineComponent({
   name: "IdeaDetails",
-  data() {
-    return {
-      tutorial: {} as Idea,
-      message: "",
-    };
-  },
-  async created() {
-    const tutorialId = this.$route.params.id as string;
-    try {
-      const tutorial = await fetchIdea(tutorialId);
-      this.tutorial = tutorial;
-    } catch (e) {
-      console.warn("Error - fetchIdea: ", e);
-    }
-  },
-  methods: {
-    async update() {
-      if (!this.tutorial.title || !this.tutorial.description) {
+  setup() {
+    const idea = ref({} as Idea);
+    const message = ref("");
+    const route = useRoute();
+    const router = useRouter();
+
+    onMounted(async () => {
+      const ideaId = route.params.id as string;
+
+      try {
+        idea.value = await fetchIdea(ideaId);
+      } catch (error) {
+        console.error("IdeaDetails: ", error);
+      }
+    });
+
+    const update = async () => {
+      if (!idea.value.title || !idea.value.description) {
         return;
       }
+
       try {
-        await updateIdea(this.tutorial.id, this.tutorial);
-        this.message = "Idea Updated!";
-      } catch (e) {
-        console.warn("Error - update: ", e);
+        await updateIdea(idea.value.id, idea.value);
+      } catch (error) {
+        console.error("update: ", error);
       }
-    },
-    async togglePublish() {
-      this.tutorial = {
-        ...this.tutorial,
-        published: !this.tutorial.published,
+    };
+
+    const togglePublish = async () => {
+      idea.value = {
+        ...idea.value,
+        published: !idea.value.published,
       };
-      await this.update();
-    },
-    async remove() {
+      await update();
+    };
+
+    const remove = async () => {
+      const idToRemove = idea.value.id;
+
       try {
-        const idToRemove = this.tutorial.id;
         await deleteIdea(idToRemove);
-        this.message = `Idea ${idToRemove} removed! Redirecting...`;
+        message.value = `Idea ${idToRemove} removed! Redirecting...`;
         setTimeout(() => {
-          this.$router.push("/");
+          router.push("/");
         }, 2000);
-      } catch (e) {
-        console.warn("Error - remove: ", e);
+      } catch (error) {
+        console.error("remove: ", error);
       }
-    },
+    };
+
+    return {
+      idea,
+      message,
+      update,
+      togglePublish,
+      remove,
+    };
   },
 });
 </script>
