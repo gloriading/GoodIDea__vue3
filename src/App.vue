@@ -17,30 +17,29 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style lang="scss">
 * {
   margin: 0;
 }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   height: 100vh;
   overflow: hidden;
   display: grid;
   grid-template-rows: 50px auto;
 }
 .nav {
-  background: #2c2c54;
-  color: whitesmoke;
+  background: $primary-purple;
+  color: $white;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   padding: 0 4rem;
 }
 .nav a {
-  color: whitesmoke;
+  color: $white;
   text-decoration: none;
   font-weight: 400;
   margin-right: 1rem;
@@ -53,6 +52,7 @@ a {
   text-decoration: none;
   color: #333;
 }
+
 /* Common Styles */
 
 button {

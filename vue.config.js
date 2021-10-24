@@ -6,4 +6,13 @@ module.exports = {
       return args;
     });
   },
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: `
+          @import "@/scss/_variables.scss";
+        `,
+      },
+    },
+  },
 };
