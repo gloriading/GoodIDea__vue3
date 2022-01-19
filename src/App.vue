@@ -6,14 +6,49 @@
       <router-link to="/add">+ Idea</router-link>
     </div>
     <router-view />
+
+    <Card
+      v-for="(card, idx) in cards"
+      :key="idx"
+      v-bind="card"
+      :isLoaded="isLoaded"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
+import Card from "@/components/Card.vue";
 
 export default defineComponent({
   name: "App",
+  components: {
+    Card,
+  },
+  setup() {
+    const isLoaded = ref(false);
+    const cards = [
+      {
+        img: "horse.svg",
+        bgColor: "#BCD1FF",
+        tag: "PRODUCTIVITY",
+        date: "3 days ago",
+        title: "7 Skills of Highly Effective Programmers",
+        desc: "Our team was inspired by the seven skills of highly effective programmers created by the TechLead. We wanted to provide our own take on the topic. Here are our seven...",
+      },
+    ];
+    onMounted(() => {
+      isLoaded.value = false;
+      setTimeout(() => {
+        isLoaded.value = true;
+      }, 3000);
+    });
+
+    return {
+      isLoaded,
+      cards,
+    };
+  },
 });
 </script>
 
